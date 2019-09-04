@@ -26,12 +26,11 @@
 #include <linux/serial_8250.h>
 #include <linux/param.h>
 #include <linux/memblock.h>
-#include <linux/arisc/arisc.h>
 #include <linux/dma-mapping.h>
 #include <linux/i2c.h>
 
 #include <asm/pmu.h>
-#include <asm/hardware/gic.h>
+#include <linux/irqchip/arm-gic.h>
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 #include <asm/mach-types.h>
@@ -255,7 +254,7 @@ static struct platform_device *sunxi_dev[] __initdata = {
 };
 #endif
 
-static void sun8i_restart(char mode, const char *cmd)
+static void sun8i_restart(enum reboot_mode reboot_mode, const char *cmd)
 {
 #ifndef CONFIG_ARCH_SUN8IW8
 	sunxi_smc_writel(0, (void __iomem *)(SUNXI_R_WDOG_VBASE + R_WDOG_IRQ_EN_REG));
@@ -277,7 +276,7 @@ static struct map_desc sunxi_io_desc[] __initdata = {
 	},
 	{
 		(u32)SUNXI_SRAM_A1_VBASE, __phys_to_pfn(SUNXI_SRAM_A1_PBASE),
-		SUNXI_SRAM_A1_SIZE, MT_MEMORY_ITCM
+		SUNXI_SRAM_A1_SIZE, MT_MEMORY_RWX_ITCM
 	},
 	{
 		(u32)SUNXI_SRAM_A2_VBASE, __phys_to_pfn(SUNXI_SRAM_A2_PBASE),
@@ -350,11 +349,6 @@ void __init sun8i_reserve(void)
 
 	/* reserve for standby */
 	memblock_reserve(SUPER_STANDBY_MEM_BASE, SUPER_STANDBY_MEM_SIZE);
-
-	/* reserve for arisc */
-#if (defined CONFIG_ARCH_SUN8IW6P1)
-	memblock_reserve(ARISC_RESERVE_MEMBASE, ARISC_RESERVE_MEMSIZE);
-#endif
 
 #if defined(CONFIG_ION) || defined(CONFIG_ION_MODULE)
 #ifndef CONFIG_CMA
@@ -455,10 +449,6 @@ static void __init sun8i_timer_init(void)
 #endif
 }
 
-struct sys_timer sunxi_timer __initdata = {
-	.init = sun8i_timer_init,
-};
-
 #ifdef CONFIG_SMP
 #if defined(CONFIG_ARCH_SUN8IW6) || defined(CONFIG_ARCH_SUN8IW9)
 extern bool __init sun8i_smp_init_ops(void);
@@ -467,9 +457,6 @@ extern bool __init sun8i_smp_init_ops(void);
 
 void __init sunxi_init_early(void)
 {
-#ifdef CONFIG_SUNXI_CONSISTENT_DMA_SIZE
-	init_consistent_dma_size(CONFIG_SUNXI_CONSISTENT_DMA_SIZE << 20);
-#endif
 }
 
 MACHINE_START(SUNXI, "sun8i")
@@ -482,7 +469,7 @@ MACHINE_START(SUNXI, "sun8i")
 #endif
 	.handle_irq	= gic_handle_irq,
 	.restart	= sun8i_restart,
-	.timer		= &sunxi_timer,
+	.init_time	= &sun8i_timer_init,
 	.dt_compat	= NULL,
 	.reserve	= sun8i_reserve,
 	.fixup		= sun8i_fixup,
