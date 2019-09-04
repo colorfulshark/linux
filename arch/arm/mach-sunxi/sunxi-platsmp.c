@@ -33,12 +33,12 @@
 #include <asm/smp.h>
 #include <asm/io.h>
 #include <asm/smp_scu.h>
-#include <asm/hardware/gic.h>
+#include <linux/irqchip/arm-gic.h>
 #include <mach/cpuidle-sunxi.h>
 #include <mach/sunxi-chip.h>
 
 #include <mach/platform.h>
-#ifdef CONFIG_HOTPLUG
+#ifdef CONFIG_HOTPLUG_CPU
 #include "sunxi-hotplug.h"
 #endif
 
@@ -138,7 +138,7 @@ void sunxi_smp_secondary_init(unsigned int cpu)
 	 * core (e.g. timer irq), then they will not have been enabled
 	 * for us: do so
 	 */
-	gic_secondary_init(0);
+	gic_secondary_init(NULL, 0, NULL);
 
 	/*
 	 * Synchronise with the boot thread.

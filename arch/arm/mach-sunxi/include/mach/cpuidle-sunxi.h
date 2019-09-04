@@ -20,7 +20,6 @@
 #include <linux/delay.h>
 #include <linux/errno.h>
 #include <linux/cpu_pm.h>
-#include <linux/arisc/arisc.h>
 
 #include <asm/smp.h>
 #include <asm/io.h>
@@ -28,9 +27,8 @@
 #include <asm/cacheflush.h>
 #include <asm/suspend.h>
 #include <asm/cputype.h>
-#include <asm/hardware/gic.h>
 #include <asm/mcpm.h>
-#include <asm/hardware/gic.h>
+#include <linux/irqchip/arm-gic.h>
 
 #include <mach/platform.h>
 #include <mach/cci.h>
@@ -139,7 +137,7 @@ static inline void sunxi_idle_cpu_die(void)
 {
 	unsigned long actlr;
 
-	gic_cpu_exit(0);
+	gic_cpu_if_down();
 
 	/* step1: disable cache */
 	asm("mrc    p15, 0, %0, c1, c0, 0" : "=r" (actlr) );
@@ -173,7 +171,7 @@ static inline void sunxi_idle_cluster_die(unsigned int cluster)
 {
 	unsigned long actlr;
 
-	gic_cpu_exit(0);
+	gic_cpu_if_down();
 
 	/* step1: disable cache */
 	asm("mrc    p15, 0, %0, c1, c0, 0" : "=r" (actlr) );

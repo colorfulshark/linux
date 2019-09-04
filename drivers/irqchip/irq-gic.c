@@ -851,7 +851,7 @@ static int gic_irq_domain_xlate(struct irq_domain *d,
 }
 
 #ifdef CONFIG_SMP
-static int gic_secondary_init(struct notifier_block *nfb, unsigned long action,
+int gic_secondary_init(struct notifier_block *nfb, unsigned long action,
 			      void *hcpu)
 {
 	if (action == CPU_STARTING || action == CPU_STARTING_FROZEN)

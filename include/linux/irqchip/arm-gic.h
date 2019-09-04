@@ -77,6 +77,8 @@ struct device_node;
 
 extern struct irq_chip gic_arch_extn;
 
+int gic_secondary_init(struct notifier_block *nfb, unsigned long action, void *hcpu);
+void gic_raise_softirq(const struct cpumask *mask, unsigned int irq);
 void gic_handle_irq(struct pt_regs *regs);
 void gic_init_bases(unsigned int, int, void __iomem *, void __iomem *,
 		    u32 offset, struct device_node *);
