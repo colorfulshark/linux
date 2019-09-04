@@ -844,6 +844,27 @@ choice
 		  This option selects UART0 on VIA/Wondermedia System-on-a-chip
 		  devices, including VT8500, WM8505, WM8650 and WM8850.
 
+	config DEBUG_SUNXI_UART0
+		bool "Kernel low-level debugging messages via sunXi UART0"
+		depends on ARCH_SUNXI
+		help
+		  Say Y here if you want kernel low-level debugging support
+		  on Allwinner A1X based platforms on the UART0.
+
+	config DEBUG_SUNXI_UART1
+		bool "Kernel low-level debugging messages via sunXi UART1"
+		depends on ARCH_SUNXI
+		help
+		  Say Y here if you want kernel low-level debugging support
+		  on Allwinner A1X based platforms on the UART1.
+
+	config DEBUG_SUNXI_UART2
+		bool "Kernel low-level debugging messages via sunXi UART2"
+		depends on ARCH_SUNXI
+		help
+		  Say Y here if you want kernel low-level debugging support
+		  on Allwinner A1X based platforms on the UART2.
+
 	config DEBUG_LL_UART_NONE
 		bool "No low-level debugging UART"
 		depends on !ARCH_MULTIPLATFORM

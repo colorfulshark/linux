@@ -366,6 +366,19 @@ config ARCH_VERSATILE
 	help
 	  This enables support for ARM Ltd Versatile board.
 
+config ARCH_SUNXI
+	bool "Allwinner Ltd. SUNXI family"
+	#select ARM_AMBA
+	select CLKSRC_MMIO
+	select GENERIC_CLOCKEVENTS
+	select HAVE_CLK
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAVE_CUSTOM_GPIO_H
+	select ARCH_HAS_CPUFREQ
+	select ARCH_HAS_SG_CHAIN
+	help
+	  This enables support for systems based on sunxi soc.
+
 config ARCH_AT91
 	bool "Atmel AT91"
 	select ARCH_REQUIRE_GPIOLIB
@@ -957,6 +970,10 @@ source "arch/arm/mach-gemini/Kconfig"
 source "arch/arm/mach-highbank/Kconfig"
 
 source "arch/arm/mach-hisi/Kconfig"
+
+if ARCH_SUNXI
+source "arch/arm/mach-sunxi/Kconfig"
+endif
 
 source "arch/arm/mach-integrator/Kconfig"
 
@@ -1632,6 +1649,7 @@ config ARCH_NR_GPIO
 	default 392 if ARCH_U8500
 	default 352 if ARCH_VT8500
 	default 264 if MACH_H4700
+	default 2048 if ARCH_SUNXI
 	default 0
 	help
 	  Maximum number of GPIOs in the system.
@@ -1908,6 +1926,15 @@ config XEN
 	select ARCH_DMA_ADDR_T_64BIT
 	help
 	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM.
+
+config ARM_FLUSH_CONSOLE_ON_RESTART
+	bool "Force flush the console on restart"
+	help
+	  If the console is locked while the system is rebooted, the messages
+	  in the temporary logbuffer would not have propogated to all the
+	  console drivers. This option forces the console lock to be
+	  released if it failed to be acquired, which will cause all the
+	  pending messages to be flushed.
 
 endmenu
 
