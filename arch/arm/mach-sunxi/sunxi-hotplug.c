@@ -30,7 +30,7 @@
 #include <asm/smp_plat.h>
 #include <asm/smp.h>
 #include <asm/smp_scu.h>
-#include <asm/hardware/gic.h>
+#include <linux/irqchip/arm-gic.h>
 #include <mach/platform.h>
 
 
@@ -83,7 +83,7 @@ void sunxi_cpu_die(unsigned int cpu)
 {
 	unsigned long actlr;
 
-	gic_cpu_exit(0);
+	gic_cpu_if_down();
 
 	/* notify platform_cpu_kill() that hardware shutdown is finished */
 	cpumask_set_cpu(cpu, &dead_cpus);
