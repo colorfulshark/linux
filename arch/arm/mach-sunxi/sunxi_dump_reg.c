@@ -21,7 +21,6 @@
 #include <linux/io.h>
 #include <linux/slab.h>
 #include <linux/miscdevice.h>
-#include <linux/arisc/hwspinlock.h>
 
 #include <mach/platform.h>
 #include <mach/hardware.h>
@@ -608,20 +607,12 @@ static u32 rtc_reg_addr = 0;
 
 static int hwspin_lock_timeout(int hwid, unsigned int timeout)
 {
-#ifdef CONFIG_SUNXI_ARISC
-	return arisc_hwspin_lock_timeout(hwid, timeout);
-#else
 	return -ESRCH;
-#endif
 }
 
 static int hwspin_unlock(int hwid)
 {
-#ifdef CONFIG_SUNXI_ARISC
-	return arisc_hwspin_unlock(hwid);
-#else
 	return -ESRCH;
-#endif
 }
 
 static ssize_t __rtc_reg_store(const char *buf, size_t size)
