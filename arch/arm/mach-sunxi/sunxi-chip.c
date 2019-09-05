@@ -23,7 +23,6 @@
 #include <linux/syscore_ops.h>
 #include <linux/delay.h>
 #include <linux/kernel.h>
-#include <linux/arisc/arisc.h>
 #include <asm/cacheflush.h>
 
 #include <mach/platform.h>
@@ -246,12 +245,6 @@ void __init sunxi_soc_ver_init(void)
 void __init sunxi_chip_id_init(void)
 {
 #if (defined CONFIG_ARCH_SUN8IW1P1)
-
-	/* sun8iw1p1 pmu chip id init */
-#ifdef CONFIG_SUNXI_ARISC
-	arisc_axp_get_chip_id((u8 *)sunxi_pmu_chipid);
-#endif
-
 	/* sun8iw1p1 serial init */
 	if (sunxi_pmu_chipid[0] == 0 && sunxi_pmu_chipid[1] == 0 &&
 		sunxi_pmu_chipid[2] == 0 && sunxi_pmu_chipid[3] == 0) {
@@ -268,12 +261,6 @@ void __init sunxi_chip_id_init(void)
 	sunxi_serial[2] |= (sunxi_pmu_chipid[2]&0xff000000) >> 20;
 	sunxi_serial[2] |= __hex2dec(sunxi_pmu_chipid[2]&0xff);
 #elif (defined CONFIG_ARCH_SUN8IW3P1)
-
-	/* sun8iw3p1 pmu chip id init */
-#ifdef CONFIG_SUNXI_ARISC
-	arisc_axp_get_chip_id((u8 *)sunxi_pmu_chipid);
-#endif
-
 	/* sun8iw3p1 serial init */
 	if (sunxi_pmu_chipid[0] == 0 && sunxi_pmu_chipid[1] == 0 &&
 		sunxi_pmu_chipid[2] == 0 && sunxi_pmu_chipid[3] == 0) {
@@ -297,11 +284,6 @@ void __init sunxi_chip_id_init(void)
 	sunxi_soc_chipid[2] = readl(SUNXI_SID_VBASE + 0x8);
 	sunxi_soc_chipid[3] = readl(SUNXI_SID_VBASE + 0xc);
 
-	/* sun8iw5p1 pmu chip id init */
-#ifdef CONFIG_SUNXI_ARISC
-	arisc_axp_get_chip_id((u8 *)sunxi_pmu_chipid);
-#endif
-
 	/* sun8iw5p1 serial init */
 	sunxi_serial[0] = sunxi_soc_chipid[3];
 	sunxi_serial[1] = sunxi_soc_chipid[2];
@@ -314,11 +296,6 @@ void __init sunxi_chip_id_init(void)
 	sunxi_soc_chipid[2] = sunxi_smc_readl(SUNXI_SID_VBASE + 0x200 + 0x8);
 	sunxi_soc_chipid[3] = sunxi_smc_readl(SUNXI_SID_VBASE + 0x200 + 0xc);
 
-	/* sun8iw6p1 pmu chip id init */
-#ifdef CONFIG_SUNXI_ARISC
-	arisc_axp_get_chip_id((u8 *)sunxi_pmu_chipid);
-#endif
-
 	/* sun8iw6p1 serial init */
 	sunxi_serial[0] = sunxi_soc_chipid[3];
 	sunxi_serial[1] = sunxi_soc_chipid[2];
@@ -330,11 +307,6 @@ void __init sunxi_chip_id_init(void)
 	sunxi_soc_chipid[1] = readl(SUNXI_SID_VBASE + 0x200 + 0x4);
 	sunxi_soc_chipid[2] = readl(SUNXI_SID_VBASE + 0x200 + 0x8);
 	sunxi_soc_chipid[3] = readl(SUNXI_SID_VBASE + 0x200 + 0xc);
-
-	/* sun9iw1p1 pmu chip id init */
-#ifdef CONFIG_SUNXI_ARISC
-	arisc_axp_get_chip_id((u8 *)sunxi_pmu_chipid);
-#endif
 
 	/* sun9iw1p1 serial init */
 	sunxi_serial[0] = sunxi_soc_chipid[3];
