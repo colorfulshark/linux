@@ -18,6 +18,7 @@
 #include <linux/seq_file.h>
 #include <linux/bitmap.h>
 #include <linux/string.h>
+#include <linux/slab.h>
 
 #include <mach/memory.h>
 #include <mach/platform.h>
