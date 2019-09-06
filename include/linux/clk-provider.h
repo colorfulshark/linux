@@ -30,6 +30,13 @@
 #define CLK_GET_RATE_NOCACHE	BIT(6) /* do not use the cached clk rate */
 #define CLK_SET_RATE_NO_REPARENT BIT(7) /* don't re-parent on rate change */
 #define CLK_GET_ACCURACY_NOCACHE BIT(8) /* do not use the cached clk accuracy */
+#define CLK_IGNORE_AUTORESET    BIT(7) /* for sunxi use */
+#define CLK_REVERT_ENABLE       BIT(8) /* for sunxi use */
+#define CLK_IGNORE_SYNCBOOT     BIT(9) /* for sunxi use */
+#define CLK_READONLY            BIT(10) /* for sunxi use */
+#define CLK_IGNORE_DISABLE      BIT(11) /* for sunxi use */
+#define CLK_RATE_FLAT_FACTORS   BIT(12) /* for sunxi use */
+#define CLK_RATE_FLAT_DELAY     BIT(13) /* for sunxi use */
 
 struct clk_hw;
 

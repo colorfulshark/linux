@@ -108,6 +108,7 @@ config COMMON_CLK_KEYSTONE
 	  a power sleep control module that gate the clock to the IPs and PLLs.
 
 source "drivers/clk/qcom/Kconfig"
+source "drivers/clk/sunxi/Kconfig"
 
 endmenu
 
