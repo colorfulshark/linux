@@ -56,6 +56,7 @@
 #include <asm/unwind.h>
 #include <asm/memblock.h>
 #include <asm/virt.h>
+#include <mach/sys_config.h>
 
 #include "atags.h"
 
@@ -914,6 +915,11 @@ void __init setup_arch(char **cmdline_p)
 		arm_pm_restart = mdesc->restart;
 
 	unflatten_device_tree();
+
+#ifdef CONFIG_ARCH_SUNXI
+	/* init sys_config script parse */
+	script_init();
+#endif
 
 	arm_dt_init_cpu_maps();
 	psci_init();
